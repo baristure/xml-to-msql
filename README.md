@@ -7,7 +7,8 @@ With this tool, you can transfer your data in **XML** to **MySQL** database.
 1.	Install npm packages
 	>npm install
 
-2. Create a .env file and set your configuration
+2. Create a file named ".env" in the root directory and fill its contents as follows.
+
     
 >     INTERVAL_VALUE=600000000
 >     MYSQL_HOST=localhost or yourserverIP
