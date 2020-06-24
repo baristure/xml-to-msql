@@ -1,0 +1,35 @@
+{
+  "name": "xml-to-msql",
+  "version": "1.0.0",
+  "description": "Transfers the data in XML to the MSQL table.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/baristure/xml-to-msql.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/baristure/xml-to-msql/issues"
+  },
+  "homepage": "https://github.com/baristure/xml-to-msql#readme",
+  "dependencies": {
+    "ascii-progress": "^1.0.5",
+    "axios": "^0.19.2",
+    "baseconvert": "^1.0.0",
+    "custom-env": "^2.0.1",
+    "eslint": "^7.3.1",
+    "fast-xml-parser": "^3.17.4",
+    "iconv-lite": "^0.6.0",
+    "mime-to-extensions": "^1.0.2",
+    "mysql": "^2.18.1",
+    "sha1": "^1.1.1",
+    "simple-node-logger": "^18.12.24",
+    "slug": "^3.3.0",
+    "xml-js": "^1.6.11"
+  }
+}
