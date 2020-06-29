@@ -3,8 +3,32 @@ const xml = require('../xml');
 // You can use fs module read function for your local xml files.
 const fs = require('fs')
 const utils = require('./utils');
-const { url } = require('inspector');
-
+function mysql_real_escape_string (str) {
+    return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+        switch (char) {
+            case "\0":
+                return "\\0";
+            case "\x08":
+                return "\\b";
+            case "\x09":
+                return "\\t";
+            case "\x1a":
+                return "\\z";
+            case "\n":
+                return "\\n";
+            case "\r":
+                return "\\r";
+            case "\"":
+            case "'":
+            case "\\":
+            case "%":
+                return "\\"+char; // prepends a backslash to backslash, percent,
+                                  // and double/single quotes
+            default:
+                return char;
+        }
+    });
+ }
 module.exports = (mysql) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -21,9 +45,9 @@ module.exports = (mysql) => {
                     categoriesRef.push(product.name);
                     // Change the following object values to your variable names
                     categories.push({
-                        'name': product.name,
-                        'category': product.category,
-                        'url': product.name.toLowerCase().trim()
+                        'name': mysql_real_escape_string(product.name),
+                        'category': mysql_real_escape_string(product.category),
+                        'url': mysql_real_escape_string(product.name).toLowerCase().trim()
                     })
                 }
             }
@@ -48,24 +72,24 @@ module.exports = (mysql) => {
             /*--------------Use this format to books,products,etc----------------*/
 
             for (let product of products) {
-                const category_id = await mysql.query('SELECT * FROM category_table_name where name =' + '\'' + product.category + '\' ');
+                const category_id = await mysql.query('SELECT * FROM category_table_name where name =' + '\'' + mysql_real_escape_string(product.category )+ '\' ');
 
-                let image = await utils.downloadImage(product.img, product.name);
+                let image = await utils.downloadImage(product.img, mysql_real_escape_string(product.name));
                 //set your table-column names and value fields
                 let productData = {
                     category_id: category_id[0].id,
-                    name: product.name,
+                    name: mysql_real_escape_string(product.name),
                     publisher: product.publisher || null,
                     image: image,
                     price: product.price_field || null,
                     edition_number: product.version || null,
                     status: 1,
                     barcode: product.id,
-                    url: slug(category_id[0].id + '-' + product.name, {
+                    url: slug(category_id[0].id + '-' + mysql_real_escape_string(product.name), {
                         lower: true
                     })
                 }
-                const query = await mysql.query('SELECT * FROM product_table where barcode =' + '\'' + product.id + '\' ');
+                const query = await mysql.query('SELECT * FROM product_table where url =' + '\'' + productData.url + '\' ');
 
                 if (!query || !query.length) {
                     await mysql.insert('product_table', productData);
