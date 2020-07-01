@@ -58,7 +58,7 @@ module.exports = (mysql) => {
                     url: category.url,
                     created: Date.now()
                 }
-                const query = await mysql.query('SELECT * FROM table_name where url =' + '\'' + mysqlData.url + '\'');
+                const query = await mysql.query('SELECT * FROM `table_name` where `url` =?', [mysqlData.url] );
                 if (!query || !query.length) {
                     await mysql.insert('table_name', mysqlData);
                 } else {
@@ -72,7 +72,7 @@ module.exports = (mysql) => {
             /*--------------Use this format to books,products,etc----------------*/
 
             for (let product of products) {
-                const category_id = await mysql.query('SELECT * FROM category_table_name where name =' + '\'' + mysql_real_escape_string(product.category )+ '\' ');
+                const category_id = await mysql.query('SELECT * FROM `category_table_name` where `name` =?', [mysql_real_escape_string(product.category)]);
 
                 let image = await utils.downloadImage(product.img, mysql_real_escape_string(product.name));
                 //set your table-column names and value fields
@@ -89,7 +89,7 @@ module.exports = (mysql) => {
                         lower: true
                     })
                 }
-                const query = await mysql.query('SELECT * FROM product_table where url =' + '\'' + productData.url + '\' ');
+                const query = await mysql.query('SELECT * FROM `product_table` where `url` =?', [productData.url]);
 
                 if (!query || !query.length) {
                     await mysql.insert('product_table', productData);
