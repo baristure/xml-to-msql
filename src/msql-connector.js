@@ -35,10 +35,10 @@ function disconnect(err = null) {
     }, 1000);
 }
 
-async function query(string) {
+async function query(string, params = []) {
     return new Promise((resolve, reject) => {
         try {
-            connection.query(string, (error, res) => {
+            connection.query(string, params, (error, res) => {
                 if (error) throw new Error(error);
                 return resolve(res);
             });
