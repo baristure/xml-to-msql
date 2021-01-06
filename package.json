@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/baristure/xml-to-msql#readme",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "baseconvert": "^1.0.0",
     "custom-env": "^2.0.1",
     "eslint": "^7.3.1",
